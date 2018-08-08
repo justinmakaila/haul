@@ -323,23 +323,19 @@ const addToXcodeBuild = async (cwd: string) => {
 
   const haulSignature = 'added by Haul';
 
-  /* Make sure we check both project iOS and iOS-TV, that's the magic behind "2" constant */
-
-  const PROJECTS_COUNT = 2;
-
   const countOccurrences = search => {
     return project.split(search).length - 1;
   };
 
   // Are we already integrated?
-  if (countOccurrences(haulSignature) === PROJECTS_COUNT) {
+  if (countOccurrences(haulSignature) > 0) {
     progress.info('Haul is already part of your build scripts');
     return;
   }
 
   const originalTask = 'shellScript = "export NODE_BINARY=node';
 
-  if (countOccurrences(originalTask) !== PROJECTS_COUNT) {
+  if (countOccurrences(originalTask) === 0) {
     progress.warn(
       `Couldn't edit Xcode project. Haven't recognized 'Bundle React Native code and images' build phase.`
     );
